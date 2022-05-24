@@ -1,0 +1,101 @@
+﻿{{strategy.order.alert_message}}
+
+-------------------------------------------------------------------------------------------------------------------------------
+
+//@version=5
+strategy('bitto 15s 10%r 73%w', overlay=true, calc_on_every_tick=false,initial_capital=100,commission_value=0.00005,commission_type=strategy.commission.cash_per_contract)
+
+//testPeriodStart = timenow-3600000 //egy napnyi idő
+testPeriodStart = timestamp(2022,5,23,11,0,0)
+
+emahigh = ta.ema(close,1000)
+emamid = ta.ema(close,400)
+emalow = ta.ema(close,100)
+
+emaLong=emahigh<emamid and emamid<emalow
+emaShort=emahigh>emamid and emamid>emalow
+
+long = emaLong
+short = emaShort
+
+if time >= testPeriodStart
+    if long
+        strategy.entry('long', strategy.long,qty=strategy.initial_capital*10,alert_message='buy')
+    if short
+        strategy.entry('short', strategy.short,qty=strategy.initial_capital*10,alert_message='sell')
+
+strategy.exit('sl/tp',profit = 100,loss=300,alert_message='sltp')
+
+plot(emahigh,color=color.green)
+plot(emamid,color=color.orange)
+plot(emalow,color=color.yellow)
+
+
+------------------------------------------------------------------------------------------------------------------------
+
+
+
+//@version=5
+strategy('bitto 15s 9.5%r 82%w', overlay=true, calc_on_every_tick=false,initial_capital=100,commission_value=0.00006,commission_type=strategy.commission.cash_per_contract)
+
+//testPeriodStart = timenow-3600000 //egy napnyi idő
+testPeriodStart = timestamp(2022,5,0,0,0,0)
+
+emahigh = ta.ema(close,1000)
+emamid = ta.ema(close,400)
+emalow = ta.ema(close,100)
+
+emaLong=emahigh<emamid and emamid<emalow
+emaShort=emahigh>emamid and emamid>emalow
+
+long = emaLong
+short = emaShort
+
+var current = 'first'
+
+if time >= testPeriodStart
+    if long and current != 'long'
+        strategy.entry('long', strategy.long,qty=strategy.initial_capital*10)
+        current := 'long'
+    if short and current != 'short'
+        strategy.entry('short', strategy.short,qty=strategy.initial_capital*10)
+        current := 'short'
+
+strategy.exit('sl/tp',profit = 100,loss=100) //400-200 15%ret 46%win 100-300 10%ret 73%win 
+
+plot(emahigh,color=color.white)
+plot(emamid,color=color.red)
+plot(emalow,color=color.blue)
+
+
+
+--------------------------------------------------------------------------------------------------------------
+
+
+//@version=5
+strategy('bitto 15s 15%r 50%w', overlay=true, calc_on_every_tick=false,initial_capital=100,commission_value=0.00005,commission_type=strategy.commission.cash_per_contract)
+
+//testPeriodStart = timenow-3600000 //egy napnyi idő
+testPeriodStart = timestamp(2022,5,0,0,0,0)
+
+emahigh = ta.ema(close,1000)
+emamid = ta.ema(close,400)
+emalow = ta.ema(close,100)
+
+emaLong=emahigh<emamid and emamid<emalow
+emaShort=emahigh>emamid and emamid>emalow
+
+long = emaLong
+short = emaShort
+
+if time >= testPeriodStart
+    if long
+        strategy.entry('long', strategy.long,qty=strategy.initial_capital*10)
+    if short
+        strategy.entry('short', strategy.short,qty=strategy.initial_capital*10)
+
+strategy.exit('sl/tp',profit = 600,loss=200)
+
+plot(emahigh,color=color.white)
+plot(emamid,color=color.red)
+plot(emalow,color=color.blue)
