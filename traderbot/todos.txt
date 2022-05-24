@@ -1,0 +1,11 @@
+﻿High Prio:
+-reconnect
+-try until successfull
+-spread monitor
+-single thread
+
+
+
+Low Prio:
+-idő kiirása
+-no quit
