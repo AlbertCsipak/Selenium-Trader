@@ -18,10 +18,12 @@ namespace traderbot
             driver.Navigate().GoToUrl("https://www.tradingview.com/chart/lQPStCCx/#"); //live-use
             //driver.Navigate().GoToUrl("https://www.tradingview.com/chart/dl7UKhYQ/"); //test-use
 
-            int tp = 10;
-            int sl = 40;
+            Console.WriteLine("TP:");
+            int tp = int.Parse(Console.ReadLine());
+            Console.WriteLine("SL:");
+            int sl = int.Parse(Console.ReadLine());
 
-            int fetchRate = 200;
+            int fetchRate = 500;
 
             string currentSpread = "";
 
@@ -80,6 +82,7 @@ namespace traderbot
                     }
 
                     Console.Clear();
+                    Console.WriteLine($"Current Fetch Rate: {fetchRate}ms");
                     Console.WriteLine($"ExchangeTime: {time}");
                     Console.WriteLine($"CurrentSpread: {currentSpread}");
                     Console.WriteLine($"Alert: {alert}");
@@ -95,14 +98,20 @@ namespace traderbot
                     if (alert.Equals("buy") || alert.Equals("sell"))
                     {
                         //close alert
-                        try
+                        foundElement = false;
+                        while (!foundElement)
                         {
-                            By byXpath = By.XPath("//button[contains(@class,'button-YKkCvwjV size-small-YKkCvwjV color-brand-YKkCvwjV variant-primary-YKkCvwjV')]");
-                            driver.FindElements(byXpath)[1].Click();
-                        }
-                        catch (Exception e)
-                        {
-                            Console.WriteLine(e.Message);
+                            try
+                            {
+                                By byXpath = By.XPath("//button[contains(@class,'button-YKkCvwjV size-small-YKkCvwjV color-brand-YKkCvwjV variant-primary-YKkCvwjV')]");
+                                driver.FindElements(byXpath)[1].Click();
+                                foundElement = true;
+                            }
+                            catch (Exception e)
+                            {
+                                Console.WriteLine(e.Message);
+                                System.Threading.Thread.Sleep(fetchRate / 2);
+                            }
                         }
 
                         //close previous trade
@@ -284,11 +293,8 @@ namespace traderbot
 
             while (true)
             {
-                System.Threading.Thread.Sleep(1000);
+                System.Threading.Thread.Sleep(fetchRate);
             }
-
-            driver.Dispose();
-
         }
     }
 }
