@@ -1,3 +1,3 @@
-# Selenium-Trading-Bot
+# Selenium-Bot
 
-Basic trader bot for forex day trading
+Basic trader bot for day trading
